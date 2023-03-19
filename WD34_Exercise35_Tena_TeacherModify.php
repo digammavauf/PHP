@@ -14,27 +14,24 @@
             <?php
                 if(!isset($_POST['teacher'])) {
                     echo 'No teacher is selected. You will be redirected back to <a href="WD34_Exercise35_Tena.php">WD34_Exercise35_Tena</a> after 5 seconds to try again.';
-                    //header('location: WD34_Exercise35_Tena.php');
-                    echo '<meta http-equiv="refresh" content="5;url=WD34_Exercise35_Tena.php" />';
+                    header("refresh: 5; url=WD34_Exercise35_Tena.php");
                 } else {
                     $teacher = $_POST['teacher'];
                     $mode = $_POST['mode'];
                     if($mode == 'update') {
-                        $teacher_firstname = $_POST['teacher_firstname'];
-                        $teacher_lastname = $_POST['teacher_lastname'];
-                        $teacher_position = $_POST['teacher_position'];
-                        $teacher_batch = $_POST['teacher_batch'];
+                        $teacher_firstname = isset($_POST['teacher_firstname'])?$_POST['teacher_firstname']:"";
+                        $teacher_lastname = isset($_POST['teacher_lastname'])?$_POST['teacher_lastname']:"";
+                        $teacher_position = isset($_POST['teacher_position'])?$_POST['teacher_position']:"";
+                        $teacher_batch = isset($_POST['teacher_batch'])?$_POST['teacher_batch']:0;
                         $sqlCmd = "UPDATE teacher_tbl SET `teacher_firstname` = '$teacher_firstname', `teacher_lastname` = '$teacher_lastname', `teacher_position` = '$teacher_position', `teacher_batch` = '$teacher_batch'  WHERE `teacher_id` = '$teacher'";
                         mysqli_query($conn, $sqlCmd);
                         echo mysqli_affected_rows($conn) . ' record(s) updated. You will be redirected back to <a href="WD34_Exercise35_Tena.php">WD34_Exercise35_Tena</a> after 5 seconds...';        
-                        //header('location: WD34_Exercise35_Tena.php');
-                        echo '<meta http-equiv="refresh" content="5;url=WD34_Exercise35_Tena.php" />';
+                        header("refresh: 5; url=WD34_Exercise35_Tena.php");
                     } if($mode == 'delete') {
                         $sqlCmd = "DELETE FROM teacher_tbl WHERE `teacher_id` = '$teacher'";
                         mysqli_query($conn, $sqlCmd);
                         echo mysqli_affected_rows($conn) . ' record(s) removed. You will be redirected back to <a href="WD34_Exercise35_Tena.php">WD34_Exercise35_Tena</a> after 5 seconds...';        
-                        //header('location: WD34_Exercise35_Tena.php');
-                        echo '<meta http-equiv="refresh" content="5;url=WD34_Exercise35_Tena.php" />';
+                        header("refresh: 5; url=WD34_Exercise35_Tena.php");
                     } elseif($mode == 'edit') {
                         ?>
                             <div class="col-4 mb-4">

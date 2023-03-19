@@ -14,26 +14,23 @@
             <?php
                 if(!isset($_POST['student'])) {
                     echo 'No student is selected. You will be redirected back to <a href="WD34_Exercise35_Tena.php">WD34_Exercise35_Tena</a> after 5 seconds to try again.';
-                    //header('location: WD34_Exercise35_Tena.php');
-                    echo '<meta http-equiv="refresh" content="5;url=WD34_Exercise35_Tena.php" />';
+                    header("refresh: 5; url=WD34_Exercise35_Tena.php");
                 } else {
                     $student = $_POST['student'];
                     $mode = $_POST['mode'];
                     if($mode == 'update') {
-                        $student_firstname = $_POST['student_firstname'];
-                        $student_lastname = $_POST['student_lastname'];
-                        $student_batch = $_POST['student_batch'];
+                        $student_firstname = isset($_POST['student_firstname'])?$_POST['student_firstname']:"";
+                        $student_lastname = isset($_POST['student_lastname'])?$_POST['student_lastname']:"";
+                        $student_batch = isset($_POST['student_batch'])?$_POST['student_batch']:0;
                         $sqlCmd = "UPDATE student_tbl SET `student_firstname` = '$student_firstname', `student_lastname` = '$student_lastname', `student_batch` = '$student_batch'  WHERE `student_id` = '$student'";
                         mysqli_query($conn, $sqlCmd);
                         echo mysqli_affected_rows($conn) . ' record(s) updated. You will be redirected back to <a href="WD34_Exercise35_Tena.php">WD34_Exercise35_Tena</a> after 5 seconds...';        
-                        //header('location: WD34_Exercise35_Tena.php');
-                        echo '<meta http-equiv="refresh" content="5;url=WD34_Exercise35_Tena.php" />';
+                        header("refresh: 5; url=WD34_Exercise35_Tena.php");
                     } if($mode == 'delete') {
                         $sqlCmd = "DELETE FROM student_tbl WHERE `student_id` = '$student'";
                         mysqli_query($conn, $sqlCmd);
                         echo mysqli_affected_rows($conn) . ' record(s) removed. You will be redirected back to <a href="WD34_Exercise35_Tena.php">WD34_Exercise35_Tena</a> after 5 seconds...';        
-                        //header('location: WD34_Exercise35_Tena.php');
-                        echo '<meta http-equiv="refresh" content="5;url=WD34_Exercise35_Tena.php" />';
+                        header("refresh: 5; url=WD34_Exercise35_Tena.php");
                     } elseif($mode == 'edit') {
                         ?>
                             <div class="col-4 mb-4">
