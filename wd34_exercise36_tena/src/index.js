@@ -7,7 +7,9 @@ import reportWebVitals from './reportWebVitals';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Student />
+    <div className="container mt-4">
+      <Student />
+    </div>
   </React.StrictMode>
 );
 

@@ -1,5 +1,9 @@
 <?php
-    header("Access-Control-Allow-Origin: *");
+    header("Access-Control-Allow-Origin: http://localhost:3000");
+    const _CREATE = 1;
+    const _READ = 2;
+    const _UPDATE = 3;
+    const _DELETE = 4;
 
     $config = array(
         'host'=>'localhost',
@@ -33,11 +37,48 @@
             mysqli_query($conn, $initStmt['createBatchTbl']);
     }
 
-    $sql = "SELECT * FROM student_tbl";
-    $rslt = mysqli_query($conn, $sql);
-    echo "[";
-    for($i=0; $i<mysqli_num_rows($rslt); $i++) {
-        echo ($i>0?',':'').json_encode(mysqli_fetch_object($rslt));
+    $method = $_SERVER['REQUEST_METHOD'];
+    switch($method) {
+        case 'GET':
+            $sql = "SELECT * FROM student_tbl";
+            break;
+        case 'POST':
+            $mode = $_POST['mode'];
+            switch($mode) {
+                case _CREATE:
+                    $student_firstname = $_POST['student_firstname'];
+                    $student_lastname = $_POST['student_lastname'];
+                    $student_batch = $_POST['student_batch'];
+                    $sql = "INSERT INTO `student_tbl`(`student_firstname`, `student_lastname`, `student_batch`) VALUES('$student_firstname', '$student_lastname', '$student_batch');";
+                    break;
+                case _UPDATE:
+                    $student_id = $_POST['student_id'];
+                    $student_firstname = $_POST['student_firstname'];
+                    $student_lastname = $_POST['student_lastname'];
+                    $student_batch = $_POST['student_batch'];
+                    $sql = "UPDATE `student_tbl` SET `student_firstname`='$student_firstname', `student_lastname`='$student_lastname', `student_batch`='$student_batch' WHERE `student_id`='$student_id';";
+                    break;
+                case _DELETE:
+                    $student_id = $_POST['student_id'];
+                    $sql = "DELETE FROM `student_tbl` WHERE `student_id`='$student_id';";
+                    break;
+                default:
+                    //do nothing
+            }
+            
+            break;
+        default:
+            //do nothing
     }
-    echo "]";
+
+    $rslt = mysqli_query($conn, $sql);
+    if(!is_bool($rslt)) {
+        echo "[";
+        for($i=0; $i<mysqli_num_rows($rslt); $i++) {
+            echo ($i>0?',':'').json_encode(mysqli_fetch_object($rslt));
+        }
+        echo "]";
+    } else {
+        echo mysqli_affected_rows($conn) . ' record(s) affected';
+    }
 ?>
